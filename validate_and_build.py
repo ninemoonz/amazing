@@ -1,10 +1,6 @@
 REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 
 
-class ImplementationError(Exception):
-    pass
-
-
 def key_check(raw: dict[str, str]) -> bool:
     for raw_key in raw:
         for key in REQUIRED_KEYS:
@@ -17,7 +13,7 @@ def width_height_check(raw: dict[str, str]) -> None:
     width: int = int(raw["WIDTH"])
     height: int = int(raw["HEIGHT"])
     if width < 0 or height < 0:
-        raise ImplementationError("WIDTH and HEIGHT should be positive")
+        raise NotImplementedError
 
 
 def coordinates_check(raw: dict[str, str]):
@@ -34,12 +30,15 @@ def coordinates_check(raw: dict[str, str]):
     exit_x = int(exit_x)
     exit_y = int(exit_y)
     if entry_x == exit_x and entry_y == exit_y:
-        raise ImplementationError("ENTRY and EXIT SHOULD NOT "
-                                  "HAVE SAME COORDINATION")
+        raise NotImplementedError
     if entry_x < 0 or entry_x >= width:
-        raise ImplementationError("Invalide coordinates")
+        raise NotImplementedError
     if entry_y < 0 or entry_y >= height:
-        raise ImplementationError("Invalide coordinates")
+        raise NotImplementedError
+
+
+def extract_values(raw: dict[str, str]):
+    
 
 
 def validate_and_build(raw: dict[str, str]) -> dict:
@@ -47,5 +46,5 @@ def validate_and_build(raw: dict[str, str]) -> dict:
         key_check(raw)
         width_height_check(raw)
         coordinates_check(raw)
-    except ImplementationError as e:
+    except NotImplementedError as e:
         print(e)
