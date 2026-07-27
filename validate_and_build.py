@@ -9,42 +9,24 @@ def key_check(raw: dict[str, str]) -> bool:
     return False
 
 
-def width_height_check(raw: dict[str, str]) -> None:
-    width: int = int(raw["WIDTH"])
-    height: int = int(raw["HEIGHT"])
+def width_height_check(width: int, height: int) -> None:
     if width < 0 or height < 0:
         raise NotImplementedError
 
 
-def coordinates_check(raw: dict[str, str]):
-    raw_entry: str = raw["ENTRY"].strip()
-    raw_exit: str = raw["EXIT"].strip()
-    width: int = int(raw["WIDTH"])
-    height: int = int(raw["HEIGHT"])
-    print(f"raw entry: {raw_entry}")
-    print(f"raw exit: {raw_exit}")
-    entry_x, entry_y = raw_entry.split(',')
-    exit_x, exit_y = raw_exit.split(',')
-    entry_x = int(entry_x)
-    entry_y = int(entry_y)
-    exit_x = int(exit_x)
-    exit_y = int(exit_y)
-    if entry_x == exit_x and entry_y == exit_y:
-        raise NotImplementedError
-    if entry_x < 0 or entry_x >= width:
-        raise NotImplementedError
-    if entry_y < 0 or entry_y >= height:
-        raise NotImplementedError
-
-
-def extract_values(raw: dict[str, str]):
-    
+def extract_size(raw: dict[str, str]):
+    try:
+        width: int = int(raw["WIDTH"])
+        height: int = int(raw["HEIGHT"])
+    except ValueError as e:
+        print(e)
+    width_height_check(width, height)
+    return width, height
 
 
 def validate_and_build(raw: dict[str, str]) -> dict:
     try:
         key_check(raw)
         width_height_check(raw)
-        coordinates_check(raw)
     except NotImplementedError as e:
         print(e)
