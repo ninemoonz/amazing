@@ -1,32 +1,19 @@
 REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 
 
-def key_check(raw: dict[str, str]) -> bool:
-    for raw_key in raw:
-        for key in REQUIRED_KEYS:
-            if raw_key == key:
-                return True
-    return False
+def key_check(raw: dict[str, str]) -> list[str]:
+    missing: list[str] = []
+    for key in REQUIRED_KEYS:
+        if key not in raw:
+            missing.append(key)
+    return missing
 
 
-def width_height_check(width: int, height: int) -> None:
-    if width < 0 or height < 0:
-        raise NotImplementedError
-
-
-def extract_size(raw: dict[str, str]):
-    try:
-        width: int = int(raw["WIDTH"])
-        height: int = int(raw["HEIGHT"])
-    except ValueError as e:
-        print(e)
-    width_height_check(width, height)
-    return width, height
-
-
-def validate_and_build(raw: dict[str, str]) -> dict:
-    try:
-        key_check(raw)
-        width_height_check(raw)
-    except NotImplementedError as e:
-        print(e)
+def parse_dimension(raw: dict[str, str], key: str) -> int:
+    value_str = raw[key]
+    if not value_str.isdigit():
+        raise ValueError(f"{key} must be a positive integer, got '{value_str}'")
+    value = int(value_str)
+    if value <= 0:
+        raise ValueError(f"{key} must be greater than 0, got {value}")
+    return value
