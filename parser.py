@@ -1,8 +1,5 @@
 import typing
-
-
-class ConfigError(Exception):
-    pass
+from error_class import ConfigError
 
 
 def parse_config(file_name: str) -> dict[str, str]:

@@ -1,3 +1,5 @@
+from error_class import ConfigError
+
 REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 
 
@@ -12,7 +14,8 @@ def key_check(raw: dict[str, str]) -> list[str]:
 def parse_dimension(raw: dict[str, str], key: str) -> int:
     value_str = raw[key]
     if not value_str.isdigit():
-        raise ValueError(f"{key} must be a positive integer, got '{value_str}'")
+        raise ValueError(f"{key} must be a positive integer, "
+                         f"got '{value_str}'")
     value = int(value_str)
     if value <= 0:
         raise ValueError(f"{key} must be greater than 0, got {value}")
@@ -27,5 +30,30 @@ def perfect_check(raw: dict[str, str], key: str) -> bool:
     return value_str == "TRUE"
 
 
-def dimension_check(raw: dict[str, str], key: str) -> bool:
+def parse_point(raw: dict[str, str],
+                key: str, width: str, height: str) -> tuple[int, int]:
+    value = raw[key].strip()
+    w = parse_dimension(raw, width)
+    h = parse_dimension(raw, height)
+    parts = value.split(',', 1)
+
+    if len(parts) != 2:
+        raise ConfigError(f"{key} must be 'x,y', got '{value}'")
+    try:
+        x = int(parts[0])
+        y = int(parts[1])
+    except ValueError:
+        raise ConfigError(f"{key} coordinates must be integers, got '{value}'")
+    if not 0 <= x < w and 0 <= y < h:
+        raise ConfigError(f"{key} ({x},{y}) is out of maze bounds "
+                          f"({width},{height})")
+    return (x, y)
+
+
+def validate_entry_exit(entry: tuple[int, int], exit: tuple[int, int]) -> None:
+    if entry == exit:
+        raise ConfigError("ENTRY and EXIT must not be the same cell")
+
+
+def validate_output_file(raw: dict[str, str], key: str):
     ...
