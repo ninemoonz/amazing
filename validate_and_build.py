@@ -17,3 +17,15 @@ def parse_dimension(raw: dict[str, str], key: str) -> int:
     if value <= 0:
         raise ValueError(f"{key} must be greater than 0, got {value}")
     return value
+
+
+def perfect_check(raw: dict[str, str], key: str) -> bool:
+    value_str = raw[key].strip().upper()
+    if value_str not in ("TRUE", "FALSE"):
+        raise ValueError(f"{key} must be either 'TRUE' or 'FALSE', "
+                         f"got {value_str}")
+    return value_str == "TRUE"
+
+
+def dimension_check(raw: dict[str, str], key: str) -> bool:
+    ...
