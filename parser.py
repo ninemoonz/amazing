@@ -1,4 +1,3 @@
-import typing
 from error_class import ConfigError
 
 

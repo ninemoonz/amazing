@@ -8,8 +8,8 @@ REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 class MazeConfig:
     width: int
     height: int
-    entry: tuple[int, int]
-    exit: tuple[int, int]
+    entry_point: tuple[int, int]
+    exit_point: tuple[int, int]
     output_file: str
     perfect: bool
     seed: int | None
@@ -48,7 +48,6 @@ def parse_point(raw: dict[str, str],
     w = parse_dimension(raw, width)
     h = parse_dimension(raw, height)
     parts = value.split(',', 1)
-
     if len(parts) != 2:
         raise ConfigError(f"{key} must be 'x,y', got '{value}'")
     try:
@@ -56,14 +55,15 @@ def parse_point(raw: dict[str, str],
         y = int(parts[1])
     except ValueError:
         raise ConfigError(f"{key} coordinates must be integers, got '{value}'")
-    if not 0 <= x < w and 0 <= y < h:
+    if not 0 <= x < w or not 0 <= y < h:
         raise ConfigError(f"{key} ({x},{y}) is out of maze bounds "
                           f"({width},{height})")
     return (x, y)
 
 
-def validate_entry_exit(entry: tuple[int, int], exit: tuple[int, int]) -> None:
-    if entry == exit:
+def validate_entry_exit(entry_point: tuple[int, int],
+                        exit_point: tuple[int, int]) -> None:
+    if entry_point == exit_point:
         raise ConfigError("ENTRY and EXIT must not be the same cell")
 
 
@@ -74,7 +74,7 @@ def validate_output_file(raw: dict[str, str], key: str) -> str:
     return value
 
 
-def parse_optional_seed(raw, key="SEED") -> int | None:
+def parse_optional_seed(raw: dict[str, str], key: str = "SEED") -> int | None:
     value = raw.get(key, "").strip()
     if value == "":
         return None
@@ -90,10 +90,11 @@ def build_config(raw: dict[str, str]) -> MazeConfig:
         raise ConfigError(f"Missing required keys: {', '.join(missing)}")
     width: int = parse_dimension(raw, "WIDTH")
     height: int = parse_dimension(raw, "HEIGHT")
-    entry: tuple[int, int] = parse_point(raw, "ENTRY", width, height)
-    exit: tuple[int, int] = parse_point(raw, "EXIT", width, height)
-    validate_entry_exit(entry, exit)
+    entry_point: tuple[int, int] = parse_point(raw, "ENTRY", "WIDTH", "HEIGHT")
+    exit_point: tuple[int, int] = parse_point(raw, "EXIT", "WIDTH", "HEIGHT")
+    validate_entry_exit(entry_point, exit_point)
     output_file: str = validate_output_file(raw, "OUTPUT_FILE")
     perfect: bool = perfect_check(raw, "PERFECT")
     seed: int | None = parse_optional_seed(raw)
-    return MazeConfig(width, height, entry, exit, output_file, perfect, seed)
+    return MazeConfig(width, height, entry_point,
+                      exit_point, output_file, perfect, seed)
