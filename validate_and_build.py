@@ -1,6 +1,18 @@
+from dataclasses import dataclass
 from error_class import ConfigError
 
 REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
+
+
+@dataclass(frozen=True)
+class MazeConfig:
+    width: int
+    height: int
+    entry: tuple[int, int]
+    exit: tuple[int, int]
+    output_file: str
+    perfect: bool
+    seed: int | None
 
 
 def key_check(raw: dict[str, str]) -> list[str]:
@@ -56,4 +68,17 @@ def validate_entry_exit(entry: tuple[int, int], exit: tuple[int, int]) -> None:
 
 
 def validate_output_file(raw: dict[str, str], key: str):
-    ...
+    value = raw.get(key, "").strip()
+    if value == "":
+        raise ConfigError(f"{key} must not be empty")
+    return value
+
+
+def parse_optional_seed(raw, key="SEED") -> int | None:
+    value = raw.get(key, "").strip()
+    if value == "":
+        return None
+    try:
+        return int(value)
+    except ValueError:
+        raise ConfigError(f"SEED must be an integer, got '{value}'")
