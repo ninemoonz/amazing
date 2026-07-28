@@ -6,7 +6,7 @@ from error_class import ConfigError
 
 def main():
     if len(sys.argv) != 2:
-        print(file=sys.stderr)
+        print("Usage: python3 a_maze_ing.py config.txt")
         sys.exit(1)
     try:
         raw = parse_config(sys.argv[1])
