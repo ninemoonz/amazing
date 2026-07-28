@@ -67,7 +67,7 @@ def validate_entry_exit(entry: tuple[int, int], exit: tuple[int, int]) -> None:
         raise ConfigError("ENTRY and EXIT must not be the same cell")
 
 
-def validate_output_file(raw: dict[str, str], key: str):
+def validate_output_file(raw: dict[str, str], key: str) -> str:
     value = raw.get(key, "").strip()
     if value == "":
         raise ConfigError(f"{key} must not be empty")
@@ -82,3 +82,18 @@ def parse_optional_seed(raw, key="SEED") -> int | None:
         return int(value)
     except ValueError:
         raise ConfigError(f"SEED must be an integer, got '{value}'")
+
+
+def build_config(raw: dict[str, str]) -> MazeConfig:
+    missing = key_check(raw)
+    if missing:
+        raise ConfigError(f"Missing required keys: {', '.join(missing)}")
+    width: int = parse_dimension(raw, "WIDTH")
+    height: int = parse_dimension(raw, "HEIGHT")
+    entry: tuple[int, int] = parse_point(raw, "ENTRY", width, height)
+    exit: tuple[int, int] = parse_point(raw, "EXIT", width, height)
+    validate_entry_exit(entry, exit)
+    output_file: str = validate_output_file(raw, "OUTPUT_FILE")
+    perfect: bool = perfect_check(raw, "PERFECT")
+    seed: int | None = parse_optional_seed(raw)
+    return MazeConfig(width, height, entry, exit, output_file, perfect, seed)
