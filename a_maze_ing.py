@@ -1,12 +1,13 @@
 import sys
 from parser import parse_config
-from validate_and_build import build_config
+from validate_and_build import build_config, MazeConfig
 from error_class import ConfigError
+from maze_generator import generator
 
 
-def main():
+def main() -> MazeConfig:
     if len(sys.argv) != 2:
-        print("Usage: python3 a_maze_ing.py config.txt")
+        print("Usage: python3 a_maze_ing.py config.txt", file=sys.stderr)
         sys.exit(1)
     try:
         raw = parse_config(sys.argv[1])
@@ -18,4 +19,7 @@ def main():
 
 
 if __name__ == "__main__":
-    print(main())
+    maze_info: MazeConfig = main()
+    print(maze_info)
+    gen_maze = generator(maze_info)
+    print(gen_maze)
