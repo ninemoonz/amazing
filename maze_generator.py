@@ -3,8 +3,9 @@ import random
 
 
 class MazeGen:
-    def __init__(self, width: int, height: int, entry_point: tuple[int, int],
-                 exit_point: tuple[int, int], seed: int = 0) -> None:
+    def __init__(self, width: int, height: int,
+                 entry_point: tuple[int, int], exit_point: tuple[int, int],
+                 seed: int = 0) -> None:
         self.width = width
         self.height = height
         self.maze_list: list[list[int]] = []
@@ -25,6 +26,8 @@ class MazeGen:
 def generator(maze_info: MazeConfig) -> None:
     width: int = maze_info.width
     height: int = maze_info.height
-    new_maze: MazeGen = MazeGen(width, height)
+    entry_p: tuple[int, int] = maze_info.entry_point
+    exit_p: tuple[int, int] = maze_info.exit_point
+    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p)
     new_maze.make_maze()
     new_maze.print_maze()
