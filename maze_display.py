@@ -25,6 +25,21 @@ def render_maze(grid: list[list[int]]) -> None:
         for c in range(width):
             v = grid[r][c]
             print(f"cell at row {r}, col {c} has value {v}")
+            cx = 2 * c + 1
+            cy = 2 * r + 1
+            if v & 1:
+                canvas[cy - 1][cx] = '#'
+            if v & 2:
+                canvas[cy][cx + 1] = '#'
+            if v & 4:
+                canvas[cy + 1][cx] = '#'
+            if v & 8:
+                canvas[cy][cx - 1] = '#'
+            for dy, dx in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+                canvas[cy + dy][cx + dx] = '#'
+    for maze_row in canvas:
+        new_row = ''.join(maze_row)
+        print(new_row)
 
 
 if __name__ == "__main__":
