@@ -12,6 +12,10 @@ def read_maze(filename: str) -> list[list[int]]:
     return converted_list
 
 
+def render_maze(maze_list: list[list[int]]) -> None:
+    ...
+
+
 if __name__ == "__main__":
     con_list = read_maze("maze.txt")
     print(con_list)
