@@ -15,8 +15,6 @@ def read_maze(filename: str) -> list[list[int]]:
 def render_maze(grid: list[list[int]]) -> None:
     height = len(grid)
     width = len(grid[0])
-    print(f"height of the grid: {height}")
-    print(f"width of the grid: {width}")
     canvas: list[list[str]] = []
     for _ in range(2 * height + 1):
         row = [' '] * (2 * width + 1)
@@ -24,7 +22,6 @@ def render_maze(grid: list[list[int]]) -> None:
     for r in range(height):
         for c in range(width):
             v = grid[r][c]
-            print(f"cell at row {r}, col {c} has value {v}")
             cx = 2 * c + 1
             cy = 2 * r + 1
             if v & 1:
@@ -38,7 +35,7 @@ def render_maze(grid: list[list[int]]) -> None:
             for dy, dx in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
                 canvas[cy + dy][cx + dx] = '#'
     for maze_row in canvas:
-        new_row = ''.join(maze_row)
+        new_row = ' '.join(maze_row)
         print(new_row)
 
 
