@@ -12,10 +12,22 @@ def read_maze(filename: str) -> list[list[int]]:
     return converted_list
 
 
-def render_maze(maze_list: list[list[int]]) -> None:
-    ...
+def render_maze(grid: list[list[int]]) -> None:
+    height = len(grid)
+    width = len(grid[0])
+    print(f"height of the grid: {height}")
+    print(f"width of the grid: {width}")
+    canvas: list[list[str]] = []
+    for _ in range(2 * height + 1):
+        row = [' '] * (2 * width + 1)
+        canvas.append(row)
+    for r in range(height):
+        for c in range(width):
+            v = grid[r][c]
+            print(f"cell at row {r}, col {c} has value {v}")
 
 
 if __name__ == "__main__":
     con_list = read_maze("maze.txt")
     print(con_list)
+    render_maze(con_list)
