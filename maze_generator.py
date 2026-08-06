@@ -2,12 +2,19 @@ from validate_and_build import MazeConfig
 import random
 
 
+class MazeCell:
+    def __init__(self, coordinates: tuple[int, int]) -> None:
+        self.coordinates = coordinates
+        self.visited: bool = False
+
+
 class MazeGen:
     def __init__(self, width: int, height: int,
                  entry_point: tuple[int, int], exit_point: tuple[int, int],
                  seed: int = 0) -> None:
         self.width = width
         self.height = height
+        self.entry_point = entry_point
         self.maze_list: list[list[int]] = []
 
     def make_maze(self) -> None:
