@@ -43,6 +43,19 @@ class MazeGen:
                 row_list.append(MazeCell(coordinate))
             self.maze_list.append(row_list)
 
+    def link_cells(self) -> None:
+        for y in range(self.height):
+            for x in range(self.width):
+                cell = self.maze_list[y][x]
+                if y > 0:
+                    cell.north_neighbor = self.maze_list[y - 1][x]
+                if y < self.height - 1:
+                    cell.south_neighbor = self.maze_list[y + 1][x]
+                if x > 0:
+                    cell.west_neighbor = self.maze_list[y][x - 1]
+                if x < self.width - 1:
+                    cell.east_neighbor = self.maze_list[y][x + 1]
+
     def print_grid(self) -> None:
         for element in self.maze_list:
             for status in element:
