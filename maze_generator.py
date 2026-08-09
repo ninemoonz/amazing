@@ -3,15 +3,16 @@ import random
 
 
 class MazeCell:
+    NORTH = 1
+    EAST = 2
+    SOUTH = 4
+    WEST = 8
+
     def __init__(self, coordinates: tuple[int, int]) -> None:
         self.coordinates = coordinates
         self.visited: bool = False
-        self.north_wall: int = 1
-        self.east_wall: int = 2
-        self.south_wall: int = 4
-        self.west_wall: int = 8
-        self.cell_value: int = (self.north_wall + self.east_wall
-                                + self.south_wall + self.west_wall)
+        self.cell_value: int = (MazeCell.NORTH + MazeCell.EAST +
+                                MazeCell.SOUTH + MazeCell.WEST)
         self.north_neighbor: "MazeCell | None" = None
         self.east_neighbor: "MazeCell | None" = None
         self.south_neighbor: "MazeCell | None" = None
@@ -45,7 +46,7 @@ class MazeGen:
     def print_grid(self) -> None:
         for element in self.maze_list:
             for status in element:
-                print(status.show_status())
+                status.show_status()
 
 
 def generator(maze_info: MazeConfig) -> None:
