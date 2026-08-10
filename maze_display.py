@@ -41,5 +41,4 @@ def render_maze(grid: list[list[int]]) -> None:
 
 if __name__ == "__main__":
     con_list = read_maze("maze.txt")
-    print(con_list)
     render_maze(con_list)

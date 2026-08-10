@@ -95,11 +95,6 @@ class MazeGen:
             next_cell.visited = True
             visit_stack.append(next_cell)
 
-    def print_grid(self) -> None:
-        for element in self.maze_list:
-            for status in element:
-                status.show_status()
-
 
 def generator(maze_info: MazeConfig) -> None:
     width: int = maze_info.width
@@ -110,4 +105,4 @@ def generator(maze_info: MazeConfig) -> None:
     new_maze.gen_grid()
     new_maze.link_cells()
     new_maze.carve_maze()
-    output_gen(new_maze.maze_list)
+    output_gen(new_maze.maze_list, maze_info)
