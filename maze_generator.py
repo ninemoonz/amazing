@@ -28,12 +28,13 @@ class MazeGen:
     def __init__(self, width: int, height: int,
                  entry_point: tuple[int, int],
                  exit_point: tuple[int, int],
-                 seed: int = 0) -> None:
+                 seed_value: int = 0) -> None:
         self.width = width
         self.height = height
         self.entry_point = entry_point
         self.exit_point = exit_point
         self.maze_list: list[list[MazeCell]] = []
+        self.seed_value = seed_value
 
     def gen_grid(self) -> None:
         for y in range(self.height):
@@ -55,6 +56,33 @@ class MazeGen:
                     cell.west_neighbor = self.maze_list[y][x - 1]
                 if x < self.width - 1:
                     cell.east_neighbor = self.maze_list[y][x + 1]
+
+    def carve_maze(self) -> None:
+        rng = random.Random(self.seed_value)
+        start = self.maze_list[self.entry_point[1]][self.entry_point[0]]
+        start.visited = True
+        visit_stack: list[MazeCell] = [start]
+
+        while visit_stack:
+            current = visit_stack[-1]  # last element stored in this lits.
+            neighbors: list[tuple[int, MazeCell]] = []
+            if (current.north_neighbor is not None and
+                    not current.north_neighbor.visited):
+                neighbors.append((MazeCell.NORTH, current.north_neighbor))
+            if (current.south_neighbor is not None and
+                    not current.south_neighbor.visited):
+                neighbors.append((MazeCell.SOUTH, current.south_neighbor))
+            if (current.east_neighbor is not None and
+                    not current.east_neighbor.visited):
+                neighbors.append((MazeCell.EAST, current.east_neighbor))
+            if (current.west_neighbor is not None and
+                    not current.west_neighbor.visited):
+                neighbors.append((MazeCell.WEST, current.west_neighbor))
+            if not neighbors:
+                visit_stack.pop()
+                continue
+            direction, next_cell = rng.
+
 
     def print_grid(self) -> None:
         for element in self.maze_list:
