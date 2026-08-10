@@ -21,4 +21,4 @@ def main() -> MazeConfig:
 if __name__ == "__main__":
     maze_info: MazeConfig = main()
     print(maze_info)
-    gen_maze = generator(maze_info)
+    generator(maze_info)

@@ -1,4 +1,5 @@
 from validate_and_build import MazeConfig
+from output_generator import output_gen
 import random
 
 
@@ -25,6 +26,13 @@ class MazeCell:
 
 
 class MazeGen:
+    OPPOSITE: dict = {
+        MazeCell.NORTH: MazeCell.SOUTH,
+        MazeCell.SOUTH: MazeCell.NORTH,
+        MazeCell.EAST: MazeCell.WEST,
+        MazeCell.WEST: MazeCell.EAST
+    }
+
     def __init__(self, width: int, height: int,
                  entry_point: tuple[int, int],
                  exit_point: tuple[int, int],
@@ -81,8 +89,11 @@ class MazeGen:
             if not neighbors:
                 visit_stack.pop()
                 continue
-            direction, next_cell = rng.
-
+            direction, next_cell = rng.choice(neighbors)
+            current.cell_value &= ~direction
+            next_cell.cell_value &= ~self.OPPOSITE[direction]
+            next_cell.visited = True
+            visit_stack.append(next_cell)
 
     def print_grid(self) -> None:
         for element in self.maze_list:
@@ -95,7 +106,8 @@ def generator(maze_info: MazeConfig) -> None:
     height: int = maze_info.height
     entry_p: tuple[int, int] = maze_info.entry_point
     exit_p: tuple[int, int] = maze_info.exit_point
-    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p)
+    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p, maze_info.seed)
     new_maze.gen_grid()
     new_maze.link_cells()
-    new_maze.print_grid()
+    new_maze.carve_maze()
+    output_gen(new_maze.maze_list)
