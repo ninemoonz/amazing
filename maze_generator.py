@@ -51,6 +51,15 @@ class MazeGen:
                 row_list.append(MazeCell(coordinate))
             self.maze_list.append(row_list)
 
+    FORTY_TWO = [[1, 0, 0, 0, 1, 1, 1],
+                 [1, 0, 0, 0, 0, 0, 1],
+                 [1, 1, 1, 0, 1, 1, 1],
+                 [0, 0, 1, 0, 1, 0, 0],
+                 [0, 0, 1, 0, 1, 1, 1]]
+
+    def forty_two(self) -> None:
+        ...
+
     def link_cells(self) -> None:
         for y in range(self.height):
             for x in range(self.width):
