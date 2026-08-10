@@ -1,5 +1,4 @@
 from validate_and_build import MazeConfig
-from output_generator import output_gen
 import random
 
 
