@@ -95,6 +95,13 @@ class MazeGen:
             next_cell.visited = True
             visit_stack.append(next_cell)
 
+    # def braid_maze(self) -> None:
+    #     rng = random.Random(self.seed_value)
+    #     for row in self.maze_list:
+    #         for cell in row:
+    #             if bin(cell.cell_value).count("1") == 3:
+    #                 if cell.coordinates[0] > 0 and cell.coordinates[0] < self.width - 1:
+
 
 def generator(maze_info: MazeConfig) -> None:
     width: int = maze_info.width
@@ -105,4 +112,5 @@ def generator(maze_info: MazeConfig) -> None:
     new_maze.gen_grid()
     new_maze.link_cells()
     new_maze.carve_maze()
+    new_maze.braid_maze()
     output_gen(new_maze.maze_list, maze_info)
