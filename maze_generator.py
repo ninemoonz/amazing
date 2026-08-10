@@ -95,15 +95,36 @@ class MazeGen:
             next_cell.visited = True
             visit_stack.append(next_cell)
 
-    # def braid_maze(self) -> None:
-    #     rng = random.Random(self.seed_value)
-    #     for row in self.maze_list:
-    #         for cell in row:
-    #             if bin(cell.cell_value).count("1") == 3:
-    #                 if cell.coordinates[0] > 0 and cell.coordinates[0] < self.width - 1:
+    def braid_maze(self) -> None:
+        rng = random.Random(self.seed_value)
+        for row in self.maze_list:
+            for cell in row:
+                if bin(cell.cell_value).count("1") == 3:
+                    candidates: list[tuple[int, MazeCell]] = []
+                    if (cell.north_neighbor is not None and
+                            cell.cell_value & MazeCell.NORTH):
+                        candidates.append((MazeCell.NORTH,
+                                           cell.north_neighbor))
+                    if (cell.east_neighbor is not None and
+                            cell.cell_value & MazeCell.EAST):
+                        candidates.append((MazeCell.EAST,
+                                           cell.east_neighbor))
+                    if (cell.south_neighbor is not None and
+                            cell.cell_value & MazeCell.SOUTH):
+                        candidates.append((MazeCell.SOUTH,
+                                           cell.south_neighbor))
+                    if (cell.west_neighbor is not None and
+                            cell.cell_value & MazeCell.WEST):
+                        candidates.append((MazeCell.WEST,
+                                           cell.west_neighbor))
+                    if not candidates:
+                        continue
+                    direction, next_cell = rng.choice(candidates)
+                    cell.cell_value &= ~direction
+                    next_cell.cell_value &= ~self.OPPOSITE[direction]
 
 
-def generator(maze_info: MazeConfig) -> None:
+def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     width: int = maze_info.width
     height: int = maze_info.height
     entry_p: tuple[int, int] = maze_info.entry_point
@@ -112,5 +133,6 @@ def generator(maze_info: MazeConfig) -> None:
     new_maze.gen_grid()
     new_maze.link_cells()
     new_maze.carve_maze()
-    new_maze.braid_maze()
-    output_gen(new_maze.maze_list, maze_info)
+    if not maze_info.perfect:
+        new_maze.braid_maze()
+    return new_maze.maze_list

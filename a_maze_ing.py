@@ -2,7 +2,9 @@ import sys
 from parser import parse_config
 from validate_and_build import build_config, MazeConfig
 from error_class import ConfigError
-from maze_generator import generator
+from maze_generator import generator, MazeCell
+from output_generator import output_gen
+from maze_display import read_maze, render_maze
 
 
 def main() -> MazeConfig:
@@ -21,4 +23,7 @@ def main() -> MazeConfig:
 if __name__ == "__main__":
     maze_info: MazeConfig = main()
     print(maze_info)
-    generator(maze_info)
+    new_maze: list[list[MazeCell]] = generator(maze_info)
+    output_gen(new_maze, maze_info)
+    output = read_maze("maze.txt")
+    render_maze(output)
