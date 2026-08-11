@@ -16,7 +16,7 @@ def render_maze(grid: list[list[int]]) -> list[list[str]]:
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
-    wall = 'X'
+    wall = '■'
     for _ in range(2 * height + 1):
         row = [' '] * (2 * width + 1)
         canvas.append(row)
