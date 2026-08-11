@@ -27,6 +27,13 @@ class MazeCell:
 
 
 class MazeGen:
+    """
+    MazeGen class is constructed and designed to store
+    1. attributes to make maze (data from config values)
+    2. methods to generate maze
+    3. hard coded data to reach for opposite direction
+    4. hard coded data to put 42 sign in the center of the maze.
+    """
     OPPOSITE: dict = {
         MazeCell.NORTH: MazeCell.SOUTH,
         MazeCell.SOUTH: MazeCell.NORTH,
@@ -40,6 +47,10 @@ class MazeGen:
                                   [0, 0, 1, 0, 1, 0, 0],
                                   [0, 0, 1, 0, 1, 1, 1]]
 
+    """
+    width: width of the maze (number of elements in a row)
+    height: height of the maze (number of rows)
+    """
     def __init__(self, width: int, height: int,
                  entry_point: tuple[int, int],
                  exit_point: tuple[int, int],

@@ -16,4 +16,4 @@ def output_gen(maze_txt: "list[list[MazeCell]]",
         f.write(f"{maze_config.entry_point[0]},"
                 f"{maze_config.entry_point[1]}\n")
         f.write(f"{maze_config.exit_point[0]},"
-                f"{maze_config.exit_point[1]}")
+                f"{maze_config.exit_point[1]}\n")
