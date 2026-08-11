@@ -1,4 +1,5 @@
 from validate_and_build import MazeConfig
+import error_class
 import random
 
 
@@ -60,7 +61,7 @@ class MazeGen:
 
     def forty_two(self, sign: list[list[int]]) -> None:
         if self.width < len(sign[0]) or self.height < len(sign):
-            return
+            raise error_class.OffsetError("Grid too small to put sign")
         ox = (self.width - len(sign[0])) // 2
         oy = (self.height - len(sign)) // 2
         for ry, row in enumerate(self.FORTY_TWO):
@@ -144,6 +145,16 @@ class MazeGen:
                         direction, next_cell = rng.choice(candidates)
                         cell.cell_value &= ~direction
                         next_cell.cell_value &= ~self.OPPOSITE[direction]
+
+    def open_corridor_check(self, cx: int, cy: int) -> bool:
+        for dy in range(3):
+            for dx in range(3):
+                cell = self.maze_list[cy + dy][cx + dx]
+                if dx < 2 and cell.cell_value & MazeCell.EAST:
+                    return False
+                if dy < 2 and cell.cell_value & MazeCell.SOUTH:
+                    return False
+        return True
 
 
 def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:

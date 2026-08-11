@@ -12,11 +12,11 @@ def read_maze(filename: str) -> list[list[int]]:
     return converted_list
 
 
-def render_maze(grid: list[list[int]]) -> None:
+def render_maze(grid: list[list[int]]) -> list[list[str]]:
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
-    wall = '#'
+    wall = 'X'
     for _ in range(2 * height + 1):
         row = [' '] * (2 * width + 1)
         canvas.append(row)
@@ -38,6 +38,11 @@ def render_maze(grid: list[list[int]]) -> None:
     for maze_row in canvas:
         new_row = ' '.join(maze_row)
         print(new_row)
+    return canvas
+
+
+def reder_shade(maze: list[list[str]]) -> None:
+    ...
 
 
 if __name__ == "__main__":
