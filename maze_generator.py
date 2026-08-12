@@ -198,7 +198,7 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     new_maze.link_cells()
     new_maze.forty_two(MazeGen.FORTY_TWO)
     new_maze.carve_maze()
-    new_maze.corridor_fix()
     if not maze_info.perfect:
         new_maze.braid_maze()
+        new_maze.corridor_fix()
     return new_maze.maze_list

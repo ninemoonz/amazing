@@ -4,3 +4,7 @@ class ConfigError(Exception):
 
 class OffsetError(Exception):
     pass
+
+
+class PathFindingError(Exception):
+    pass
