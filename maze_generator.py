@@ -157,7 +157,7 @@ class MazeGen:
                         cell.cell_value &= ~direction
                         next_cell.cell_value &= ~self.OPPOSITE[direction]
 
-    def open_corridor_check(self, cx: int, cy: int) -> bool:
+    def corridor_check(self, cx: int, cy: int) -> bool:
         for dy in range(3):
             for dx in range(3):
                 cell = self.maze_list[cy + dy][cx + dx]
@@ -166,6 +166,29 @@ class MazeGen:
                 if dy < 2 and cell.cell_value & MazeCell.SOUTH:
                     return False
         return True
+
+
+"""
+def corridor_fix(self) -> None:
+rng = random.Random(self.seed_value)
+    for cy in range(self.height - 2):
+        for cx in range(self.width - 2):
+            if not self.open_corridor_check(cx, cy):
+                continue
+            walls: list[tuple[MazeCell, MazeCell, int]] = []
+            for dy in range(3):
+                for dx in range(3):
+                    cell = self.maze_list[cy + dy][cx + dx]
+                    if dx < 2:
+                        east_cell = self.maze_list[cy + dy][cx + dx + 1]
+                        walls.append((cell, east_cell, MazeCell.EAST))
+                    if dy < 2:
+                        south_cell = self.maze_list[cy + dy + 1][cx + dx]
+                        walls.append((cell, south_cell, MazeCell.SOUTH))
+            cell, neighbor, direction = rng.choice(walls)
+            cell.cell_value |= direction
+            neighbor.cell_value |= self.OPPOSITE[direction]
+"""
 
 
 def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
@@ -180,4 +203,5 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     new_maze.carve_maze()
     if not maze_info.perfect:
         new_maze.braid_maze()
+    
     return new_maze.maze_list
