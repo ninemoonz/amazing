@@ -6,8 +6,9 @@ if TYPE_CHECKING:
 
 
 def output_gen(maze_txt: "list[list[MazeCell]]",
-               maze_config: MazeConfig) -> None:
-    with open("maze.txt", "w") as f:
+               maze_config: MazeConfig,
+               route: str = "") -> None:
+    with open(maze_config.output_file, "w") as f:
         for row in maze_txt:
             for element in row:
                 f.write(f"{element.cell_value:x}")
@@ -17,3 +18,5 @@ def output_gen(maze_txt: "list[list[MazeCell]]",
                 f"{maze_config.entry_point[1]}\n")
         f.write(f"{maze_config.exit_point[0]},"
                 f"{maze_config.exit_point[1]}\n")
+        if route:
+            f.write(f"{route}\n")

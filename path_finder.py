@@ -1,34 +1,57 @@
-import typing
-from validate_and_build import MazeConfig
+from collections import deque
 
-"""
-ext piece: how a queue mechanically produces the ring order, without you ever labeling "this is ring 1, this is ring 2."
-
-Take a small branching example (not a straight corridor this time):
+from maze_generator import MazeCell
 
 
-S connects to A and B   (A, B are 1 move from S)
-A connects to C          (C is 2 moves from S)
-B connects to D          (D is 2 moves from S)
-Exit = D. Rule: add newly-found cells to the back of the queue, always process from the front, mark a cell visited the instant it's added (so it can't be added twice).
+def find_path(maze: list[list[MazeCell]], start: tuple[int, int], goal: tuple[int, int]) -> str:
+    height = len(maze)
+    width = len(maze[0]) if height else 0
 
-Pop	Is it exit?	Newly discovered → added to back	Queue afterward
-S	no	A, B	[A, B]
-A	no	C	[B, C]
-B	no	D	[C, D]
-C	no	(nothing new)	[D]
-D	yes — stop	—	—
-Look at the order things got popped: S, then A, B (both ring 1), then C, D (both ring 2). A and B were both fully processed before C or D was touched — even though D was found (added to the queue) while processing B, one step after C was found while processing A. The queue didn't know or care about "rings" as a concept. It happened automatically, purely from the add-to-back / remove-from-front rule: everything found while processing ring 1 gets queued up behind the rest of ring 1, but ahead of anything ring 2 will later discover.
+    queue = deque([start])
+    visited = {start}
+    came_from: dict[tuple[int, int], tuple[int, int] | None] = {start: None}
+    move_taken: dict[tuple[int, int], str] = {}
 
-That's the proof, not an assertion: FIFO order = ring order, for free.
+    while queue:
+        x, y = queue.popleft()
 
-One more detail visible in the trace: notice I said "mark visited the instant it's added," not "when it's processed." If I'd waited, both A and B might try to discover the same ring-2 cell independently before either got marked, and it'd end up in the queue twice. Marking on add prevents that.
+        if (x, y) == goal:
+            break
 
-Does the "why FIFO order = ring order" proof land? If yes, next is the last piece: came_from, which I'll ground the same concrete way using this exact S/A/B/C/D example instead of abstract "notebook" language.
+        for direction, dx, dy, current_bit, neighbor_bit in (
+            ("N", 0, -1, MazeCell.NORTH, MazeCell.SOUTH),
+            ("E", 1, 0, MazeCell.EAST, MazeCell.WEST),
+            ("S", 0, 1, MazeCell.SOUTH, MazeCell.NORTH),
+            ("W", -1, 0, MazeCell.WEST, MazeCell.EAST),
+        ):
+            nx = x + dx
+            ny = y + dy
 
+            if not (0 <= nx < width and 0 <= ny < height):
+                continue
+            if (nx, ny) in visited:
+                continue
 
-"""
+            current = maze[y][x]
+            neighbor = maze[ny][nx]
 
+            if current.cell_value & current_bit:
+                continue
+            if neighbor.cell_value & neighbor_bit:
+                continue
 
-def find_path(output_file: typing.IO[str], config_obj: MazeConfig) -> None:
-    ...
+            visited.add((nx, ny))
+            came_from[(nx, ny)] = (x, y)
+            move_taken[(nx, ny)] = direction
+            queue.append((nx, ny))
+
+    if goal not in came_from:
+        return ""
+
+    route: list[str] = []
+    current = goal
+    while came_from[current] is not None:
+        route.append(move_taken[current])
+        current = came_from[current]
+    route.reverse()
+    return "".join(route)
