@@ -28,4 +28,4 @@ if __name__ == "__main__":
     route = find_path(new_maze, maze_info.entry_point, maze_info.exit_point)
     output_gen(new_maze, maze_info, route)
     output = read_maze(maze_info.output_file)
-    render_maze(output)
+    render_maze(output, maze_info.entry_point, maze_info.exit_point)

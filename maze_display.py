@@ -1,3 +1,5 @@
+from validate_and_build import MazeConfig
+
 def read_maze(filename: str) -> list[list[int]]:
     converted_list: list[list[int]] = []
     with open(filename) as f:
@@ -12,7 +14,9 @@ def read_maze(filename: str) -> list[list[int]]:
     return converted_list
 
 
-def render_maze(grid: list[list[int]]) -> list[list[str]]:
+def render_maze(grid: list[list[int]],
+                entry_p: tuple[int, int],
+                exit_p: tuple[int, int]) -> list[list[str]]:
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
@@ -25,6 +29,10 @@ def render_maze(grid: list[list[int]]) -> list[list[str]]:
             v = grid[r][c]
             cx = 2 * c + 1
             cy = 2 * r + 1
+            if r == entry_p[1] and c == entry_p[0]:
+                canvas[cy][cx] = 'A'
+            if r == exit_p[1] and c == exit_p[0]:
+                canvas[cy][cx] = 'B'
             if v & 1:
                 canvas[cy - 1][cx] = wall
             if v & 2:
@@ -43,8 +51,3 @@ def render_maze(grid: list[list[int]]) -> list[list[str]]:
 
 def render_shade(maze: list[list[str]]) -> None:
     ...
-
-
-if __name__ == "__main__":
-    con_list = read_maze("maze.txt")
-    render_maze(con_list)
