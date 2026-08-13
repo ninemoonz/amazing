@@ -41,7 +41,7 @@ def render_maze(grid: list[list[int]]) -> list[list[str]]:
     return canvas
 
 
-def reder_shade(maze: list[list[str]]) -> None:
+def render_shade(maze: list[list[str]]) -> None:
     ...
 
 
