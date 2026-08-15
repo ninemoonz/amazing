@@ -1,5 +1,6 @@
 from validate_and_build import MazeConfig
 
+
 def read_maze(filename: str) -> list[list[int]]:
     converted_list: list[list[int]] = []
     with open(filename) as f:
