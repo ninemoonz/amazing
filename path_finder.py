@@ -1,9 +1,10 @@
 from collections import deque
-
 from maze_generator import MazeCell
 
 
-def find_path(maze: list[list[MazeCell]], start: tuple[int, int], goal: tuple[int, int]) -> str:
+def find_path(maze: list[list[MazeCell]],
+              start: tuple[int, int],
+              goal: tuple[int, int]) -> str:
     height = len(maze)
     width = len(maze[0]) if height else 0
 
