@@ -44,9 +44,9 @@ def render_maze(grid: list[list[int]],
                 canvas[cy][cx - 1] = wall
             for dy, dx in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
                 canvas[cy + dy][cx + dx] = wall
-    for maze_row in canvas:
-        new_row = ''.join(maze_row)
-        print(new_row)
+    # for maze_row in canvas:
+    #     new_row = ''.join(maze_row)
+    #     print(new_row)
     return canvas
 
 
@@ -59,21 +59,21 @@ def render_path(maze: list[list[str]],
              "E": (1, 0),
              "S": (0, 1),
              "W": (-1, 0)}
-    shade = "."
+    shade = "▒▒"
     cx = cy = -1
     for y in range(height):
         for x in range(width):
-            if maze[y][x] == "A":
+            if maze[y][x] == 'A ':
                 cx, cy = x, y
     if cx == -1:
         return
     for ch in path:
         dx, dy = moves[ch]
         gap_x, gap_y = cx + dx, cy + dy
-        if maze[gap_y][gap_x] == " ":
-            maze[gap_y][gap_x] == shade
+        if maze[gap_y][gap_x] == "  ":
+            maze[gap_y][gap_x] = shade
         cx, cy = cx + 2 * dx, cy + 2 * dy
-        if maze[cy][cx] == " ":
+        if maze[cy][cx] == "  ":
             maze[cy][cx] = shade
     for maze_row in maze:
-        print(" ".join(maze_row))
+        print("".join(maze_row))
