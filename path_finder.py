@@ -50,9 +50,11 @@ def find_path(maze: list[list[MazeCell]],
         return ""
 
     route: list[str] = []
-    current = goal
-    while came_from[current] is not None:
-        route.append(move_taken[current])
-        current = came_from[current]
+    node = goal
+    while came_from[node] is not None:
+        route.append(move_taken[node])
+        next_node = came_from[node]
+        assert next_node is not None
+        node = next_node
     route.reverse()
     return "".join(route)

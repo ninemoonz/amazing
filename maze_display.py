@@ -59,7 +59,7 @@ def render_path(maze: list[list[str]],
              "E": (1, 0),
              "S": (0, 1),
              "W": (-1, 0)}
-    shade = "▒▒"
+    shade = "░░"
     cx = cy = -1
     for y in range(height):
         for x in range(width):

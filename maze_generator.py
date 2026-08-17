@@ -193,7 +193,9 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     height: int = maze_info.height
     entry_p: tuple[int, int] = maze_info.entry_point
     exit_p: tuple[int, int] = maze_info.exit_point
-    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p, maze_info.seed)
+    seed = (maze_info.seed if maze_info.seed is not None
+            else random.randrange(2 ** 32))
+    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p, seed)
     new_maze.gen_grid()
     new_maze.link_cells()
     new_maze.forty_two(MazeGen.FORTY_TWO)
