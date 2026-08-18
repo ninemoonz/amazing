@@ -15,13 +15,22 @@ def read_maze(filename: str) -> list[list[int]]:
     return converted_list
 
 
+class MazeColor:
+    PINK = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    RESET = '\033[0m'
+
+
 def render_maze(grid: list[list[int]],
                 entry_p: tuple[int, int],
                 exit_p: tuple[int, int]) -> list[list[str]]:
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
-    wall = '██'
+    wall = f'{MazeColor.GREEN}██{MazeColor.RESET}'
     for _ in range(2 * height + 1):
         row = ['  '] * (2 * width + 1)
         canvas.append(row)
@@ -31,9 +40,9 @@ def render_maze(grid: list[list[int]],
             cx = 2 * c + 1
             cy = 2 * r + 1
             if r == entry_p[1] and c == entry_p[0]:
-                canvas[cy][cx] = 'A '
+                canvas[cy][cx] = f'{MazeColor.BLUE}▓▓{MazeColor.RESET}'
             if r == exit_p[1] and c == exit_p[0]:
-                canvas[cy][cx] = 'B '
+                canvas[cy][cx] = f'{MazeColor.RED}▓▓{MazeColor.RESET}'
             if v & 1:
                 canvas[cy - 1][cx] = wall
             if v & 2:
@@ -63,7 +72,7 @@ def render_path(maze: list[list[str]],
     cx = cy = -1
     for y in range(height):
         for x in range(width):
-            if maze[y][x] == 'A ':
+            if maze[y][x] == f'{MazeColor.BLUE}▓▓{MazeColor.RESET}':
                 cx, cy = x, y
     if cx == -1:
         return
