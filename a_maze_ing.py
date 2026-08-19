@@ -6,6 +6,7 @@ from maze_generator import generator, MazeCell
 from output_generator import output_gen
 from maze_display import read_maze, render_maze, render_path
 from path_finder import find_path
+from menu import menu_func
 
 
 def main() -> MazeConfig:
@@ -23,11 +24,15 @@ def main() -> MazeConfig:
 
 if __name__ == "__main__":
     maze_info: MazeConfig = main()
-    print(maze_info)
+    # new grid
     new_maze: list[list[MazeCell]] = generator(maze_info)
+    # find route
     route = find_path(new_maze, maze_info.entry_point, maze_info.exit_point)
+    # return maze.txt
     output_gen(new_maze, maze_info, route)
+    # convert the numbers into hexadecimal
     output = read_maze(maze_info.output_file)
     rendered_maze = render_maze(output, maze_info.entry_point,
                                 maze_info.exit_point)
     render_path(rendered_maze, route, maze_info)
+    menu_func(rendered_maze)

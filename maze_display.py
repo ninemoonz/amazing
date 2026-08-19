@@ -1,6 +1,15 @@
 from validate_and_build import MazeConfig
 
 
+class MazeColor:
+    PINK = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    RESET = '\033[0m'
+
+
 def read_maze(filename: str) -> list[list[int]]:
     converted_list: list[list[int]] = []
     with open(filename) as f:
@@ -13,15 +22,6 @@ def read_maze(filename: str) -> list[list[int]]:
                 converted_row.append(int(ch, 16))
             converted_list.append(converted_row)
     return converted_list
-
-
-class MazeColor:
-    PINK = '\033[95m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    RESET = '\033[0m'
 
 
 def render_maze(grid: list[list[int]],
@@ -53,9 +53,6 @@ def render_maze(grid: list[list[int]],
                 canvas[cy][cx - 1] = wall
             for dy, dx in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
                 canvas[cy + dy][cx + dx] = wall
-    # for maze_row in canvas:
-    #     new_row = ''.join(maze_row)
-    #     print(new_row)
     return canvas
 
 
@@ -84,5 +81,5 @@ def render_path(maze: list[list[str]],
         cx, cy = cx + 2 * dx, cy + 2 * dy
         if maze[cy][cx] == "  ":
             maze[cy][cx] = shade
-    for maze_row in maze:
-        print("".join(maze_row))
+    # for maze_row in maze:
+    #     print("".join(maze_row))
