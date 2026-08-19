@@ -12,7 +12,7 @@ def print_maze(maze: list[list[str]]) -> None:
 
 def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
     new_maze: list[list[MazeCell]] = generator(maze_info)
-    route = find_path(new_maze, maze_info.entry, maze_info.exit_point)
+    route = find_path(new_maze, maze_info.entry_point, maze_info.exit_point)
     output_gen(new_maze, maze_info, route)
     grid = read_maze(maze_info.output_file)
     return grid, route
@@ -35,9 +35,12 @@ def menu_func(maze_info: MazeConfig) -> None:
               "[4] Quit Program\n")
         choice = input("Choice: ")
         if choice == "1":
-            print("1")
+            grid, route = build_maze(maze_info)
+            new_maze = render_maze(grid,
+                                   maze_info.entry_point, maze_info.exit_point)
+            print_maze(new_maze)
         elif choice == "2":
-            print("Show path")
+            show_path = False
         elif choice == "3":
             print("How to change the colors?")
         elif choice == "4":
