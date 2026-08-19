@@ -22,6 +22,11 @@ def menu_func(maze_info: MazeConfig) -> None:
     grid, route = build_maze(maze_info)
     show_path = True
     color_index = 0
+    maze = render_maze(grid,
+                       maze_info.entry_point, maze_info.exit_point)
+    if show_path:
+        render_path(maze, route, maze_info)
+    print_maze(maze)
     while True:
         print("=== A-Maze-Ing ===")
         print("[1] Re-generate a new maze\n"
@@ -30,11 +35,7 @@ def menu_func(maze_info: MazeConfig) -> None:
               "[4] Quit Program\n")
         choice = input("Choice: ")
         if choice == "1":
-            maze = render_maze(grid,
-                               maze_info.entry_point, maze_info.exit_point)
-            if show_path:
-                render_path(maze, route, maze_info)
-            print_maze(maze)
+            print("1")
         elif choice == "2":
             print("Show path")
         elif choice == "3":
