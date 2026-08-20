@@ -2,20 +2,24 @@ from validate_and_build import MazeConfig
 
 
 class MazeColor:
-    color_list: str = ["PINK", "BLUE", "GREEN", "YELLO", "RED"]
     PINK = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
     RED = '\033[91m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    BLACK = '\033[90m'
     RESET = '\033[0m'
 
 
 WALL_COLORS: list[str] = [MazeColor.PINK,
-                          MazeColor.BLUE,
                           MazeColor.GREEN,
                           MazeColor.YELLOW,
-                          MazeColor.RED]
+                          MazeColor.CYAN,
+                          MazeColor.WHITE,
+                          MazeColor.BLACK
+                          ]
 
 
 def read_maze(filename: str) -> list[list[int]]:

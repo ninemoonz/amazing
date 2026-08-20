@@ -33,18 +33,13 @@ def menu_func(maze_info: MazeConfig) -> None:
         print("=== A-Maze-Ing ===")
         print("[1] Re-generate a new maze\n"
               "[2] Show/Hide Path from entry to exit\n"
-              "[3] Roate maze colors\n"
+              "[3] Rotate maze colors\n"
               "[4] Quit Program\n")
         choice = input("Choice (1-4): ")
         if choice == "1":
             grid, route = build_maze(maze_info)
-            maze = render_maze(grid,
-                               maze_info.entry_point, maze_info.exit_point)
         elif choice == "2":
-            if not show_path:
-                show_path = True
-            elif show_path:
-                show_path = False
+            show_path = not show_path
         elif choice == "3":
             color_index = (color_index + 1) % len(maze_display.WALL_COLORS)
         elif choice == "4":
