@@ -1,4 +1,4 @@
-from validate_and_build import build_config, MazeConfig
+from validate_and_build import MazeConfig
 from maze_generator import generator, MazeCell
 from output_generator import output_gen
 import maze_display
