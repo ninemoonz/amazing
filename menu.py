@@ -14,8 +14,8 @@ def print_maze(maze: list[list[str]]) -> None:
 def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
     new_maze: list[list[MazeCell]] = generator(maze_info)
     route = find_path(new_maze, maze_info.entry_point, maze_info.exit_point)
-    output_gen(new_maze, maze_info, route)  # generate maze.txt file
-    grid = read_maze(maze_info.output_file)  # read the output file and convert into hexadecimal 2D list
+    output_gen(new_maze, maze_info, route)
+    grid = read_maze(maze_info.output_file)
     return grid, route
 
 
