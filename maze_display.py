@@ -2,12 +2,20 @@ from validate_and_build import MazeConfig
 
 
 class MazeColor:
+    color_list: str = ["PINK", "BLUE", "GREEN", "YELLO", "RED"]
     PINK = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
     RED = '\033[91m'
     RESET = '\033[0m'
+
+
+WALL_COLORS: list[str] = [MazeColor.PINK,
+                          MazeColor.BLUE,
+                          MazeColor.GREEN,
+                          MazeColor.YELLOW,
+                          MazeColor.RED]
 
 
 def read_maze(filename: str) -> list[list[int]]:
@@ -26,11 +34,13 @@ def read_maze(filename: str) -> list[list[int]]:
 
 def render_maze(grid: list[list[int]],
                 entry_p: tuple[int, int],
-                exit_p: tuple[int, int]) -> list[list[str]]:
+                exit_p: tuple[int, int],
+                color_index: int = 0) -> list[list[str]]:
+
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
-    wall = f'{MazeColor.GREEN}██{MazeColor.RESET}'
+    wall = f'{WALL_COLORS[color_index]}██{MazeColor.RESET}'
     for _ in range(2 * height + 1):
         row = ['  '] * (2 * width + 1)
         canvas.append(row)
@@ -40,9 +50,9 @@ def render_maze(grid: list[list[int]],
             cx = 2 * c + 1
             cy = 2 * r + 1
             if r == entry_p[1] and c == entry_p[0]:
-                canvas[cy][cx] = f'{MazeColor.BLUE}▓▓{MazeColor.RESET}'
-            if r == exit_p[1] and c == exit_p[0]:
                 canvas[cy][cx] = f'{MazeColor.RED}▓▓{MazeColor.RESET}'
+            if r == exit_p[1] and c == exit_p[0]:
+                canvas[cy][cx] = f'{MazeColor.BLUE}▓▓{MazeColor.RESET}'
             if v & 1:
                 canvas[cy - 1][cx] = wall
             if v & 2:
@@ -69,7 +79,7 @@ def render_path(maze: list[list[str]],
     cx = cy = -1
     for y in range(height):
         for x in range(width):
-            if maze[y][x] == f'{MazeColor.BLUE}▓▓{MazeColor.RESET}':
+            if maze[y][x] == f'{MazeColor.RED}▓▓{MazeColor.RESET}':
                 cx, cy = x, y
     if cx == -1:
         return
@@ -81,5 +91,3 @@ def render_path(maze: list[list[str]],
         cx, cy = cx + 2 * dx, cy + 2 * dy
         if maze[cy][cx] == "  ":
             maze[cy][cx] = shade
-    # for maze_row in maze:
-    #     print("".join(maze_row))

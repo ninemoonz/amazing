@@ -101,7 +101,7 @@ class MazeGen:
         visit_stack: list[MazeCell] = [start]
 
         while visit_stack:
-            current = visit_stack[-1]  # last element stored in this lits.
+            current = visit_stack[-1]  # last element stored in this list.
             neighbors: list[tuple[int, MazeCell]] = []
             if (current.north_neighbor is not None and
                     not current.north_neighbor.visited):
