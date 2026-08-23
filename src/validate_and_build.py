@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from error_class import ConfigError
+from src.error_class import ConfigError
 
 REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 

@@ -1,5 +1,5 @@
-from validate_and_build import MazeConfig
-import error_class
+from src.validate_and_build import MazeConfig
+import src.error_class as error_class
 import random
 
 

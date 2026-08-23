@@ -1,9 +1,9 @@
-from validate_and_build import MazeConfig
-from maze_generator import generator, MazeCell
-from output_generator import output_gen
-import maze_display
-from maze_display import read_maze, render_maze, render_path
-from path_finder import find_path
+from src.validate_and_build import MazeConfig
+from src.maze_generator import generator, MazeCell
+from src.output_generator import output_gen
+import src.maze_display as maze_display
+from src.maze_display import read_maze, render_maze, render_path
+from src.path_finder import find_path
 
 
 def print_maze(maze: list[list[str]]) -> None:

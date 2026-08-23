@@ -1,4 +1,4 @@
-from validate_and_build import MazeConfig
+from src.validate_and_build import MazeConfig
 
 
 class MazeColor:

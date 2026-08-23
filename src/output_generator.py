@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
-from validate_and_build import MazeConfig
+from src.validate_and_build import MazeConfig
 
 if TYPE_CHECKING:
-    from maze_generator import MazeCell
+    from src.maze_generator import MazeCell
 
 
 def output_gen(maze_txt: "list[list[MazeCell]]",

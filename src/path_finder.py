@@ -1,5 +1,5 @@
 from collections import deque
-from maze_generator import MazeCell
+from src.maze_generator import MazeCell
 
 
 def find_path(maze: list[list[MazeCell]],
