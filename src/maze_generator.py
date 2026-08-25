@@ -205,7 +205,8 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     exit_y = exit_p[1]
     if (new_maze.maze_list[entry_y][entry_x].is_sign or
             new_maze.maze_list[exit_y][exit_x].is_sign):
-        raise error_class.PathFindingError("Not able to make a path")
+        raise error_class.PathFindingError("[PathFindingError] entry or exit "
+                                           "point is in a sign")
     new_maze.carve_maze()
     if not maze_info.perfect:
         new_maze.braid_maze()

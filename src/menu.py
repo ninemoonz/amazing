@@ -4,6 +4,8 @@ from src.output_generator import output_gen
 import src.maze_display as maze_display
 from src.maze_display import read_maze, render_maze, render_path
 from src.path_finder import find_path
+import src.error_class as error_class
+import sys
 
 
 def print_maze(maze: list[list[str]]) -> None:
@@ -20,7 +22,11 @@ def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
 
 
 def menu_func(maze_info: MazeConfig) -> None:
-    grid, route = build_maze(maze_info)
+    try:
+        grid, route = build_maze(maze_info)
+    except error_class.PathFindingError as e:
+        print(e)
+        sys.exit(1)
     show_path = False
     color_index = 0
     while True:
