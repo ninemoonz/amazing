@@ -199,6 +199,13 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     new_maze.gen_grid()
     new_maze.link_cells()
     new_maze.forty_two(MazeGen.FORTY_TWO)
+    entry_x = entry_p[0]
+    entry_y = entry_p[1]
+    exit_x = exit_p[0]
+    exit_y = exit_p[1]
+    if (new_maze.maze_list[entry_y][entry_x].is_sign or
+            new_maze.maze_list[exit_y][exit_x].is_sign):
+        raise error_class.PathFindingError("Not able to make a path")
     new_maze.carve_maze()
     if not maze_info.perfect:
         new_maze.braid_maze()
