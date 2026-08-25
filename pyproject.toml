@@ -1,0 +1,10 @@
+# This is a TOML document
+
+[build-system]
+requires = ["setuptools>=61.0"]
+biuld-backend = "setuptools.build_meta"
+
+[project]
+title = "mazegen"
+version = "1.0.0"
+description = "A reusable maze generator"

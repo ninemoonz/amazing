@@ -1,6 +1,13 @@
 from src.validate_and_build import MazeConfig
-import src.error_class as error_class
 import random
+
+
+class PathFindingError(Exception):
+    pass
+
+
+class OffsetError(Exception):
+    pass
 
 
 class MazeCell:
@@ -72,7 +79,7 @@ class MazeGen:
 
     def forty_two(self, sign: list[list[int]]) -> None:
         if self.width < len(sign[0]) or self.height < len(sign):
-            raise error_class.OffsetError("Grid too small to put sign")
+            raise OffsetError("Grid too small to put sign")
         ox = (self.width - len(sign[0])) // 2
         oy = (self.height - len(sign)) // 2
         for ry, row in enumerate(self.FORTY_TWO):
@@ -205,8 +212,8 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     exit_y = exit_p[1]
     if (new_maze.maze_list[entry_y][entry_x].is_sign or
             new_maze.maze_list[exit_y][exit_x].is_sign):
-        raise error_class.PathFindingError("[PathFindingError] entry or exit "
-                                           "point is in a sign")
+        raise PathFindingError("[PathFindingError] entry or exit "
+                               "point is in a sign")
     new_maze.carve_maze()
     if not maze_info.perfect:
         new_maze.braid_maze()
