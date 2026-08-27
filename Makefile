@@ -3,7 +3,7 @@ SRC        = a_maze_ing.py
 CONFIG     = config.txt
 OUTPUT     = maze.txt
 
-.PHONY: run clean fclean re mypy
+.PHONY: run clean fclean re mypy build install
 
 build:
 	pip install build
@@ -18,8 +18,8 @@ run:
 clean:
 	rm -rf __pycache__
 	rm -rf .mypy_cache
-	rm -rf .dist
-	rm -rf .mazegen.egg-info
+	rm -rf dist/
+	rm -rf mazegen.egg-info/
 
 fclean: clean
 	rm -f $(OUTPUT)
