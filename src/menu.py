@@ -1,7 +1,7 @@
 import sys
 import random
 import os
-from maze_generator import MazeCell, MazeGen
+from maze_generator import MazeGen
 from src.validate_and_build import MazeConfig
 from src.output_generator import output_gen
 import src.maze_display as maze_display
