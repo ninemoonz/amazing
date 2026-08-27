@@ -1,4 +1,6 @@
-__pycache__/
-*.pyc
 .mypy_cache/
+__pycache__/
+dist/
+mazegen.egg-info/
+*.pyc
 maze.txt

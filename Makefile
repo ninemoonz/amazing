@@ -5,8 +5,12 @@ OUTPUT     = maze.txt
 
 .PHONY: run clean fclean re mypy
 
+build:
+	pip install build
+	python -m build
+
 install:
-	pip install mazegen-1.0.0-py3-none-any.whl
+	pip install dist/mazegen-1.0.0-py3-none-any.whl
 
 run:
 	$(PYTHON) $(SRC) $(CONFIG)
@@ -14,6 +18,8 @@ run:
 clean:
 	rm -rf __pycache__
 	rm -rf .mypy_cache
+	rm -rf .dist
+	rm -rf .mazegen.egg-info
 
 fclean: clean
 	rm -f $(OUTPUT)

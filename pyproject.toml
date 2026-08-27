@@ -10,4 +10,4 @@ version = "1.0.0"
 description = "A reusable maze generator"
 
 [tool.setuptools]
-py-modules = ["mazegen"]
+py-modules = ["maze_generator"]
