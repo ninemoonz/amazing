@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 from src.validate_and_build import MazeConfig
 
 if TYPE_CHECKING:
-    from src.maze_generator import MazeCell
+    from maze_generator import MazeCell
 
 
 def output_gen(maze_txt: "list[list[MazeCell]]",

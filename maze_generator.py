@@ -1,10 +1,6 @@
 import random
 
 
-class PathFindingError(Exception):
-    pass
-
-
 class OffsetError(Exception):
     pass
 

@@ -8,3 +8,6 @@ build-backend = "setuptools.build_meta"
 name = "mazegen"
 version = "1.0.0"
 description = "A reusable maze generator"
+
+[tool.setuptools]
+py-modules = ["mazegen"]
