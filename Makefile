@@ -5,6 +5,9 @@ OUTPUT     = maze.txt
 
 .PHONY: run clean fclean re mypy
 
+install:
+	pip install mazegen-1.0.0-py3-none-any.whl
+
 run:
 	$(PYTHON) $(SRC) $(CONFIG)
 

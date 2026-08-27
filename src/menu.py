@@ -1,11 +1,12 @@
 from src.validate_and_build import MazeConfig
-from src.maze_generator import generator, MazeCell
+from src.maze_generator import MazeCell, MazeGen, PathFindingError
 from src.output_generator import output_gen
 import src.maze_display as maze_display
 from src.maze_display import read_maze, render_maze, render_path
 from src.path_finder import find_path
 import src.error_class as error_class
 import sys
+import random
 
 
 def print_maze(maze: list[list[str]]) -> None:
@@ -19,6 +20,32 @@ def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
     output_gen(new_maze, maze_info, route)
     grid = read_maze(maze_info.output_file)
     return grid, route
+
+
+def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
+    width: int = maze_info.width
+    height: int = maze_info.height
+    entry_p: tuple[int, int] = maze_info.entry_point
+    exit_p: tuple[int, int] = maze_info.exit_point
+    seed = (maze_info.seed if maze_info.seed is not None
+            else random.randrange(2 ** 32))
+    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p, seed)
+    new_maze.gen_grid()
+    new_maze.link_cells()
+    new_maze.forty_two(MazeGen.FORTY_TWO)
+    entry_x = entry_p[0]
+    entry_y = entry_p[1]
+    exit_x = exit_p[0]
+    exit_y = exit_p[1]
+    if (new_maze.maze_list[entry_y][entry_x].is_sign or
+            new_maze.maze_list[exit_y][exit_x].is_sign):
+        raise PathFindingError("[PathFindingError] entry or exit "
+                               "point is in a sign")
+    new_maze.carve_maze()
+    if not maze_info.perfect:
+        new_maze.braid_maze()
+        new_maze.corridor_fix()
+    return new_maze.maze_list
 
 
 def menu_func(maze_info: MazeConfig) -> None:

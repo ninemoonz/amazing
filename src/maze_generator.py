@@ -1,4 +1,3 @@
-from src.validate_and_build import MazeConfig
 import random
 
 
@@ -193,29 +192,3 @@ class MazeGen:
                 cell, neighbor, direction = rng.choice(walls)
                 cell.cell_value |= direction
                 neighbor.cell_value |= self.OPPOSITE[direction]
-
-
-def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
-    width: int = maze_info.width
-    height: int = maze_info.height
-    entry_p: tuple[int, int] = maze_info.entry_point
-    exit_p: tuple[int, int] = maze_info.exit_point
-    seed = (maze_info.seed if maze_info.seed is not None
-            else random.randrange(2 ** 32))
-    new_maze: MazeGen = MazeGen(width, height, entry_p, exit_p, seed)
-    new_maze.gen_grid()
-    new_maze.link_cells()
-    new_maze.forty_two(MazeGen.FORTY_TWO)
-    entry_x = entry_p[0]
-    entry_y = entry_p[1]
-    exit_x = exit_p[0]
-    exit_y = exit_p[1]
-    if (new_maze.maze_list[entry_y][entry_x].is_sign or
-            new_maze.maze_list[exit_y][exit_x].is_sign):
-        raise PathFindingError("[PathFindingError] entry or exit "
-                               "point is in a sign")
-    new_maze.carve_maze()
-    if not maze_info.perfect:
-        new_maze.braid_maze()
-        new_maze.corridor_fix()
-    return new_maze.maze_list
