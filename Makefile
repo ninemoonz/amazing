@@ -5,6 +5,11 @@ OUTPUT     = maze.txt
 
 .PHONY: run clean fclean re mypy build install
 
+lint:
+	python3 -m flake8 .
+	python3 -m mypy .
+	python3 -m mypy --strict .
+
 build:
 	pip install build
 	python -m build
