@@ -31,12 +31,41 @@ class MazeCell:
 
 class MazeGen:
     """
-    MazeGen class is constructed and designed to store
-    1. attributes to make maze (data from config values)
-    2. methods to generate maze
-    3. hard coded data to reach for opposite direction
-    4. hard coded data to put 42 sign in the center of the maze.
+    A maze generator and solver, usable standalone with no external
+    dependencies beyond the Python standard library.
+
+    Basic usage:
+
+        from maze_generator import MazeGen
+
+        maze = MazeGen(width=10, height=10,
+                        entry_point=(0, 0), exit_point=(9, 9),
+                        seed_value=42)
+        maze.gen_grid()
+        maze.link_cells()
+        maze.forty_two(MazeGen.FORTY_TWO)
+        maze.carve_maze()
+
+    Custom parameters (passed to __init__):
+        width, height  -- size of the maze grid
+        entry_point    -- (x, y) tuple, where the maze starts
+        exit_point     -- (x, y) tuple, where the maze ends
+        seed_value     -- controls randomness; same seed -> same maze
+
+    Accessing the generated structure:
+        maze.maze_list is a list[list[MazeCell]] grid. Each MazeCell
+        has a cell_value (0-15) whose bits mark which walls are
+        closed: 1=North, 2=East, 4=South, 8=West.
+
+            cell = maze.maze_list[y][x]
+            print(cell.cell_value)
+
+    Accessing a solution:
+        route = maze.find_path()
+        # A string of moves (e.g. "EESSWW") from entry_point to
+        # exit_point, or "" if no path exists.
     """
+
     OPPOSITE: dict = {
         MazeCell.NORTH: MazeCell.SOUTH,
         MazeCell.SOUTH: MazeCell.NORTH,
