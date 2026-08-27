@@ -17,8 +17,7 @@ WALL_COLORS: list[str] = [MazeColor.PINK,
                           MazeColor.GREEN,
                           MazeColor.YELLOW,
                           MazeColor.CYAN,
-                          MazeColor.WHITE,
-                          MazeColor.BLACK
+                          MazeColor.WHITE
                           ]
 
 

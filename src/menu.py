@@ -1,5 +1,6 @@
 import sys
 import random
+import os
 from maze_generator import MazeCell, MazeGen
 from src.validate_and_build import MazeConfig
 from src.output_generator import output_gen
@@ -57,6 +58,7 @@ def menu_func(maze_info: MazeConfig) -> None:
     show_path = False
     color_index = 0
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
         maze = render_maze(grid,
                            maze_info.entry_point, maze_info.exit_point,
                            color_index)
@@ -76,6 +78,8 @@ def menu_func(maze_info: MazeConfig) -> None:
         elif choice == "3":
             color_index = (color_index + 1) % len(maze_display.WALL_COLORS)
         elif choice == "4":
+            os.system('cls' if os.name == 'nt' else 'clear')
             break
         else:
             print("Choose number between 1-4")
+            input("Press Enter to continue...")
