@@ -1,4 +1,5 @@
 import random
+from collections import deque
 
 
 class OffsetError(Exception):
@@ -188,3 +189,59 @@ class MazeGen:
                 cell, neighbor, direction = rng.choice(walls)
                 cell.cell_value |= direction
                 neighbor.cell_value |= self.OPPOSITE[direction]
+
+    def find_path(self) -> str:
+        height = len(self.maze_list)
+        width = len(self.maze_list[0]) if height else 0
+
+        queue = deque([self.entry_point])
+        visited = {self.entry_point}
+        came_from: dict[tuple[int, int],
+                        tuple[int, int] | None] = {self.entry_point: None}
+        move_taken: dict[tuple[int, int], str] = {}
+
+        while queue:
+            x, y = queue.popleft()
+
+            if (x, y) == self.exit_point:
+                break
+
+            for direction, dx, dy, current_bit, neighbor_bit in (
+                ("N", 0, -1, MazeCell.NORTH, MazeCell.SOUTH),
+                ("E", 1, 0, MazeCell.EAST, MazeCell.WEST),
+                ("S", 0, 1, MazeCell.SOUTH, MazeCell.NORTH),
+                ("W", -1, 0, MazeCell.WEST, MazeCell.EAST),
+            ):
+                nx = x + dx
+                ny = y + dy
+
+                if not (0 <= nx < width and 0 <= ny < height):
+                    continue
+                if (nx, ny) in visited:
+                    continue
+
+                current = self.maze_list[y][x]
+                neighbor = self.maze_list[ny][nx]
+
+                if current.cell_value & current_bit:
+                    continue
+                if neighbor.cell_value & neighbor_bit:
+                    continue
+
+                visited.add((nx, ny))
+                came_from[(nx, ny)] = (x, y)
+                move_taken[(nx, ny)] = direction
+                queue.append((nx, ny))
+
+        if self.exit_point not in came_from:
+            return ""
+
+        route: list[str] = []
+        node = self.exit_point
+        while came_from[node] is not None:
+            route.append(move_taken[node])
+            next_node = came_from[node]
+            assert next_node is not None
+            node = next_node
+        route.reverse()
+        return "".join(route)

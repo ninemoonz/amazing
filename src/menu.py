@@ -6,7 +6,6 @@ from src.validate_and_build import MazeConfig
 from src.output_generator import output_gen
 import src.maze_display as maze_display
 from src.maze_display import read_maze, render_maze, render_path
-from src.path_finder import find_path
 from src.error_class import PathFindingError
 
 
@@ -16,14 +15,14 @@ def print_maze(maze: list[list[str]]) -> None:
 
 
 def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
-    new_maze: list[list[MazeCell]] = generator(maze_info)
-    route = find_path(new_maze, maze_info.entry_point, maze_info.exit_point)
-    output_gen(new_maze, maze_info, route)
+    new_maze: MazeGen = generator(maze_info)
+    route = new_maze.find_path()
+    output_gen(new_maze.maze_list, maze_info, route)
     grid = read_maze(maze_info.output_file)
     return grid, route
 
 
-def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
+def generator(maze_info: MazeConfig) -> MazeGen:
     width: int = maze_info.width
     height: int = maze_info.height
     entry_p: tuple[int, int] = maze_info.entry_point
@@ -46,7 +45,7 @@ def generator(maze_info: MazeConfig) -> list[list[MazeCell]]:
     if not maze_info.perfect:
         new_maze.braid_maze()
         new_maze.corridor_fix()
-    return new_maze.maze_list
+    return new_maze
 
 
 def menu_func(maze_info: MazeConfig) -> None:
