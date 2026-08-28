@@ -4,3 +4,4 @@ dist/
 mazegen.egg-info/
 *.pyc
 maze.txt
+en.subject.pdf
