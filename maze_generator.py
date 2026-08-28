@@ -66,7 +66,7 @@ class MazeGen:
         # exit_point, or "" if no path exists.
     """
 
-    OPPOSITE: dict = {
+    OPPOSITE: dict[int, int] = {
         MazeCell.NORTH: MazeCell.SOUTH,
         MazeCell.SOUTH: MazeCell.NORTH,
         MazeCell.EAST: MazeCell.WEST,
@@ -98,7 +98,7 @@ class MazeGen:
         for y in range(self.height):
             row_list: list[MazeCell] = []
             for x in range(self.width):
-                coordinate: tuple = (x, y)
+                coordinate: tuple[int, int] = (x, y)
                 row_list.append(MazeCell(coordinate))
             self.maze_list.append(row_list)
 
