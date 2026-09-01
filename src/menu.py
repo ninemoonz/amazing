@@ -1,3 +1,9 @@
+"""Interactive maze display and control menu.
+
+Provides a terminal-based menu interface for maze regeneration,
+path visualization, wall color rotation, and program exit.
+"""
+
 import sys
 import random
 import os
@@ -10,11 +16,27 @@ from src.error_class import PathFindingError
 
 
 def print_maze(maze: list[list[str]]) -> None:
+    """Print rendered maze to terminal.
+
+    Args:
+        maze: 2D grid of ASCII/ANSI strings from render_maze.
+    """
     for maze_row in maze:
         print("".join(maze_row))
 
 
 def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
+    """Generate maze, compute solution, save to file.
+
+    Orchestrates full maze generation pipeline: create, carve,
+    find path, output to file, and read back from file.
+
+    Args:
+        maze_info: Configuration object with maze parameters.
+
+    Returns:
+        tuple: (rendered grid as 2D int list, solution path string)
+    """
     new_maze: MazeGen = generator(maze_info)
     route = new_maze.find_path()
     output_gen(new_maze.maze_list, maze_info, route)
@@ -23,6 +45,20 @@ def build_maze(maze_info: MazeConfig) -> tuple[list[list[int]], str]:
 
 
 def generator(maze_info: MazeConfig) -> MazeGen:
+    """Create and carve maze according to configuration.
+
+    Initializes generator with dimensions, seeds, carves passages,
+    and optionally adds loops and fixes corridors.
+
+    Args:
+        maze_info: Configuration object.
+
+    Returns:
+        MazeGen: Fully generated maze object.
+
+    Raises:
+        PathFindingError: If entry or exit is in the 42 logo pattern.
+    """
     width: int = maze_info.width
     height: int = maze_info.height
     entry_p: tuple[int, int] = maze_info.entry_point
@@ -49,6 +85,14 @@ def generator(maze_info: MazeConfig) -> MazeGen:
 
 
 def menu_func(maze_info: MazeConfig) -> None:
+    """Main interactive menu loop.
+
+    Displays maze and presents options to regenerate, toggle path,
+    change wall color, or quit program.
+
+    Args:
+        maze_info: Configuration object.
+    """
     try:
         grid, route = build_maze(maze_info)
     except PathFindingError as e:

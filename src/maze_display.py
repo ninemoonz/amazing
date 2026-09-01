@@ -1,7 +1,27 @@
+"""Maze rendering and visualization.
+
+Provides functionality to render maze grids as ASCII art with colored
+walls, markers for entry/exit points, and visualization of solution paths.
+"""
+
 from src.validate_and_build import MazeConfig
 
 
 class MazeColor:
+    """ANSI color codes for terminal output.
+
+    Attributes:
+        PINK: Magenta/pink color code.
+        BLUE: Blue color code.
+        GREEN: Green color code.
+        YELLOW: Yellow color code.
+        RED: Red color code.
+        CYAN: Cyan color code.
+        WHITE: White color code.
+        BLACK: Black color code.
+        RESET: Reset to default color.
+    """
+
     PINK = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
@@ -22,6 +42,17 @@ WALL_COLORS: list[str] = [MazeColor.PINK,
 
 
 def read_maze(filename: str) -> list[list[int]]:
+    """Read hexadecimal maze from file.
+
+    Parses maze file format where each character is a hex digit
+    representing one cell's wall configuration.
+
+    Args:
+        filename: Path to maze output file.
+
+    Returns:
+        list[list[int]]: 2D grid of cell wall values (0-15).
+    """
     converted_list: list[list[int]] = []
     with open(filename) as f:
         for line in f:
@@ -39,7 +70,21 @@ def render_maze(grid: list[list[int]],
                 entry_p: tuple[int, int],
                 exit_p: tuple[int, int],
                 color_index: int = 0) -> list[list[str]]:
+    """Render maze grid as colored ASCII art.
 
+    Creates a doubled coordinate canvas where maze cells are
+    centered and walls fill adjacent positions. Entry marked in red,
+    exit marked in blue.
+
+    Args:
+        grid: 2D list of cell wall values.
+        entry_p: (x, y) entry point coordinate.
+        exit_p: (x, y) exit point coordinate.
+        color_index: Index into WALL_COLORS list (0-4).
+
+    Returns:
+        list[list[str]]: 2D grid of ANSI-colored ASCII strings.
+    """
     height = len(grid)
     width = len(grid[0])
     canvas: list[list[str]] = []
@@ -72,6 +117,16 @@ def render_maze(grid: list[list[int]],
 def render_path(maze: list[list[str]],
                 path: str,
                 config_value: MazeConfig) -> None:
+    """Overlay solution path on rendered maze.
+
+    Walks the solution path from entry to exit, marking corridors
+    with shade characters. Modifies maze canvas in-place.
+
+    Args:
+        maze: 2D canvas from render_maze (modified in-place).
+        path: Solution path string (e.g. 'ENWSE').
+        config_value: Configuration for maze dimensions.
+    """
     height = config_value.height
     width = config_value.width if height else 0
     moves = {"N": (0, -1),
