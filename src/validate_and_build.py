@@ -60,15 +60,15 @@ def parse_dimension(raw: dict[str, str], key: str) -> int:
         int: Validated positive integer value.
 
     Raises:
-        ValueError: If value is not a positive integer.
+        ConfigError: If value is not a positive integer.
     """
     value_str = raw[key]
     if not value_str.isdigit():
-        raise ValueError(f"{key} must be a positive integer, "
-                         f"got '{value_str}'")
+        raise ConfigError(f"{key} must be a positive integer, "
+                          f"got '{value_str}'")
     value = int(value_str)
     if value <= 0:
-        raise ValueError(f"{key} must be greater than 0, got {value}")
+        raise ConfigError(f"{key} must be greater than 0, got {value}")
     return value
 
 
@@ -83,12 +83,12 @@ def perfect_check(raw: dict[str, str], key: str) -> bool:
         bool: True if value is 'TRUE', False if 'FALSE'.
 
     Raises:
-        ValueError: If value is neither 'TRUE' nor 'FALSE'.
+        ConfigError: If value is neither 'TRUE' nor 'FALSE'.
     """
     value_str = raw[key].strip().upper()
     if value_str not in ("TRUE", "FALSE"):
-        raise ValueError(f"{key} must be either 'TRUE' or 'FALSE', "
-                         f"got {value_str}")
+        raise ConfigError(f"{key} must be either 'TRUE' or 'FALSE', "
+                          f"got {value_str}")
     return value_str == "TRUE"
 
 

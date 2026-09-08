@@ -11,15 +11,19 @@ RESET = \033[0m
 .PHONY: run clean fclean re mypy build install
 
 lint:
+	@if ! $(PYTHON) -c "import flake8" 2>/dev/null; then echo "Installing flake8"; $(PYTHON) -m pip install flake8 || exit 1; fi
 	@echo "$(BLUE)checking flake8$(RESET)"
 	$(PYTHON) -m flake8 .
+	@if ! $(PYTHON) -c "import mypy" 2>/dev/null; then echo "Installing mypy"; $(PYTHON) -m pip install mypy || exit 1; fi
 	@echo "$(BLUE)checking mypy$(RESET)"
 	$(PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 	@echo "$(GREEN)flake8 and mypy check successfully.$(RESET)"
 
 lint-strict:
+	@if ! $(PYTHON) -c "import flake8" 2>/dev/null; then echo "Installing flake8"; $(PYTHON) -m pip install flake8 || exit 1; fi
 	@echo "$(BLUE)checking flake8$(RESET)"
 	$(PYTHON) -m flake8 .
+	@if ! $(PYTHON) -c "import mypy" 2>/dev/null; then echo "Installing mypy"; $(PYTHON) -m pip install mypy || exit 1; fi
 	@echo "$(BLUE)checking mypy --strict$(RESET)"
 	$(PYTHON) -m mypy --strict .
 	@echo "$(GREEN)flake8 and mypy strict check successfully.$(RESET)"
